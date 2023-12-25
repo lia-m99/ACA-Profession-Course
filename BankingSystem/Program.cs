@@ -1,40 +1,32 @@
-﻿using BankingSystem.Accounts;
-using BankingSystem.Depositables;
-using BankingSystem.Interfaces;
-using BankingSystem.Withdrawables;
+﻿using BankingSystem;
+using BankingSystem.Accounts;
+using BankingSystem.Helper;
+using CustomInterfaces;
 
-namespace BankingSystem.Interfaces
+namespace CustomInterfaces
 {
-    public interface IInterestBearing
+    public class CustomTenPersentTransaction : IAccountTransaction
     {
-        decimal CalculateInterest();
-    }
-}
-
-namespace BankingSystem.Accounts
-{
-    public class BasicInterest : IInterestBearing
-    {
-        public decimal CalculateInterest()
+        public decimal Withdraw(decimal balance, decimal amount)
         {
-            return 0.02M; // 2% interest rate
-        }
-    }
+            decimal tenPercent = balance * 0.1m;
 
-    public class HighInterestSavingsAccount : Account
-    {
-        private readonly IInterestBearing _interestBearing;
+            if (amount <= tenPercent)
+            {
+                balance -= amount;
+                Console.WriteLine($"Withdrawn: {amount}, New Balance: {balance}");
+                return balance;
+            }
 
-        public HighInterestSavingsAccount(IDepositable depositable, IWithdrawable withdrawable, IInterestBearing interestBearing)
-            : base(depositable, withdrawable)
-        {
-            _interestBearing = interestBearing;
+            throw new Exception(ErrorTexts.Data[ErrorCode.InvalidWithdrawalAmount]);
         }
 
-        public override void DisplayAccountDetails()
+        public decimal Deposit(decimal balance, decimal amount)
         {
-            base.DisplayAccountDetails();
-            Console.WriteLine($"Interest Earned: {_interestBearing.CalculateInterest()}");
+            balance += amount;
+            Console.WriteLine($"Deposited: {amount}, New Balance: {balance}");
+
+            return balance;
         }
     }
 }
@@ -53,7 +45,7 @@ class Program
     {
         TestAccount("Savings Account", () =>
         {
-            SavingsAccount savingsAccount = new SavingsAccount();
+            Account savingsAccount = new Account(new SavingsAccountTransaction());
             savingsAccount.Deposit(1000);
             savingsAccount.Withdraw(500);
             // Insufficient funds.
@@ -65,7 +57,7 @@ class Program
     {
         TestAccount("Checking Account", () =>
         {
-            CheckingAccount checkingAccount = new CheckingAccount(500);
+            Account checkingAccount = new Account(new CheckingAccountTransaction(500));
             checkingAccount.Deposit(500);
             checkingAccount.Withdraw(500); // 0 on the balance.
             // Overdraft Limit Exceeded.
@@ -78,7 +70,7 @@ class Program
         TestAccount("Fixed Deposit Account", () =>
         {
             DateTime maturityDate = DateTime.Now.AddYears(1);
-            FixedDepositAccount fixedDepositAccount = new FixedDepositAccount(maturityDate);
+            Account fixedDepositAccount = new Account(new FixedDepositTransaction(maturityDate));
             fixedDepositAccount.Deposit(500);
             fixedDepositAccount.Withdraw(500);
             // Non-Mature Withdrawal.
@@ -88,15 +80,15 @@ class Program
 
     static void TestShowcasingExtendability()
     {
-        TestAccount("High-Interest Savings Account", () =>
+        TestAccount("Ten Percent Withdrawal Account", () =>
         {
-            HighInterestSavingsAccount highInterestSavingsAccount = new HighInterestSavingsAccount(
-                new Depositable(), new Withdrawable(), new BasicInterest());
+            Account tenPercentAccount = new Account(new CustomTenPersentTransaction());
 
-            highInterestSavingsAccount.Deposit(2000);
-            highInterestSavingsAccount.Withdraw(500);
+            tenPercentAccount.Deposit(2000);
+            tenPercentAccount.Withdraw(10);
+            tenPercentAccount.DisplayAccountDetails();
 
-            highInterestSavingsAccount.DisplayAccountDetails();
+            tenPercentAccount.Withdraw(500);
         });
     }
 

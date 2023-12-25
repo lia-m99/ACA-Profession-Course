@@ -1,12 +1,12 @@
 ﻿using BankingSystem.Helper;
 
-namespace BankingSystem.Withdrawables
+namespace BankingSystem.Accounts
 {
-    internal class FixedDepositWithdrawable : IWithdrawable
+    internal class FixedDepositTransaction : IAccountTransaction
     {
         private readonly DateTime _maturityDate;
 
-        public FixedDepositWithdrawable(DateTime maturityDate)
+        public FixedDepositTransaction(DateTime maturityDate)
         {
             _maturityDate = maturityDate;
         }
@@ -30,7 +30,14 @@ namespace BankingSystem.Withdrawables
 
         }
 
-        public DateTime MaturityDate => _maturityDate;
+        public decimal Deposit(decimal balance, decimal amount)
+        {
+            balance += amount;
+            Console.WriteLine($"Deposited: {amount}, New Balance: {balance}");
 
+            return balance;
+        }
+
+        public DateTime MaturityDate => _maturityDate;
     }
 }

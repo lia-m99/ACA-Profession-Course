@@ -1,8 +1,8 @@
 ﻿using BankingSystem.Helper;
 
-namespace BankingSystem.Withdrawables
+namespace BankingSystem.Accounts
 {
-    public class Withdrawable : IWithdrawable
+    public class SavingsAccountTransaction : IAccountTransaction
     {
         public decimal Withdraw(decimal balance, decimal amount)
         {
@@ -15,6 +15,13 @@ namespace BankingSystem.Withdrawables
 
             throw new Exception(ErrorTexts.Data[ErrorCode.InvalidWithdrawalAmount]);
         }
-    }
 
+        public decimal Deposit(decimal balance, decimal amount)
+        {
+            balance += amount;
+            Console.WriteLine($"Deposited: {amount}, New Balance: {balance}");
+
+            return balance;
+        }
+    }
 }

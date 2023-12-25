@@ -4,23 +4,21 @@
     {
         private decimal _balance;
 
-        protected readonly IDepositable _depositable;
-        protected readonly IWithdrawable _withdrawable;
+        private readonly IAccountTransaction _transaction;
 
-        public Account(IDepositable depositable, IWithdrawable withdrawable)
+        public Account(IAccountTransaction transaction)
         {
-            _depositable = depositable;
-            _withdrawable = withdrawable;
+            _transaction = transaction;
         }
 
         public void Deposit(decimal amount)
         {
-            _balance = _depositable.Deposit(_balance, amount);
+            _balance = _transaction.Deposit(_balance, amount);
         }
 
         public void Withdraw(decimal amount)
         {
-            _balance = _withdrawable.Withdraw(_balance, amount);
+            _balance = _transaction.Withdraw(_balance, amount);
         }
 
         public decimal GetBalance()

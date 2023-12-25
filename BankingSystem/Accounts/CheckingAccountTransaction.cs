@@ -1,12 +1,12 @@
 ﻿using BankingSystem.Helper;
 
-namespace BankingSystem.Withdrawables
+namespace BankingSystem.Accounts
 {
-    public class OverdraftWithdrawable : IWithdrawable
+    public class CheckingAccountTransaction : IAccountTransaction
     {
         private readonly decimal _overdraftLimit;
 
-        public OverdraftWithdrawable(decimal overdraftLimit)
+        public CheckingAccountTransaction(decimal overdraftLimit)
         {
             _overdraftLimit = overdraftLimit;
         }
@@ -28,6 +28,14 @@ namespace BankingSystem.Withdrawables
             }
 
             throw new Exception(ErrorTexts.Data[ErrorCode.InvalidWithdrawalAmount]);
+        }
+
+        public decimal Deposit(decimal balance, decimal amount)
+        {
+            balance += amount;
+            Console.WriteLine($"Deposited: {amount}, New Balance: {balance}");
+
+            return balance;
         }
 
         public decimal OverdraftLimit => _overdraftLimit;
