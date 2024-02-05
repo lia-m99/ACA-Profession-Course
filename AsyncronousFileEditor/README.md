@@ -12,5 +12,5 @@ This is a C# console application that allows users to concurrently edit multiple
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/lia-m99/concurrent-text-file-editor.git
+   git clone https://github.com/lia-m99/AsyncronousFileEditor.git
    cd concurrent-text-file-editor
