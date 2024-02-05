@@ -32,4 +32,4 @@ The Employee Management System is a simple C# project that demonstrates basic fu
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/EmployeeManagementSystem.git
+   git clone https://github.com/lia-m99/EmployeeManagementSystem.git
