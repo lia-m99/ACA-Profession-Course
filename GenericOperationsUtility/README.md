@@ -31,4 +31,4 @@ The project is organized into the following components:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/GenericCalculationUtility.git
+   git clone https://github.com/lia-m99/GenericCalculationUtility.git
