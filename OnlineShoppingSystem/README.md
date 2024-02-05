@@ -36,4 +36,4 @@ The Online Shopping System is a sample application designed to showcase the impl
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/online-shopping-system.git
+   git clone https://github.com/lia-m99/online-shopping-system.git
